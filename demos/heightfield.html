@@ -30,12 +30,13 @@
             var matrix = [];
             var sizeX = 15,
                 sizeY = 15;
+            var centerX = sizeX / 2
+            var centerY = sizeY / 2
             for (var i = 0; i < sizeX; i++) {
                 matrix.push([]);
                 for (var j = 0; j < sizeY; j++) {
-                    var height = Math.cos(i/sizeX * Math.PI * 2)*Math.cos(j/sizeY * Math.PI * 2) + 2;
-                    if(i===0 || i === sizeX-1 || j===0 || j === sizeY-1)
-                        height = 3;
+                    distFromCenter = Math.sqrt(Math.pow(centerX-i,2) + Math.pow(centerY-j,2))
+                    height = Math.pow(1*(1 - distFromCenter/sizeX), 3)
                     matrix[i].push(height);
                 }
             }
@@ -56,10 +57,10 @@
                 for (var j = 0; j < sizeY - 1; j++) {
                     if(i===0 || i >= sizeX-2 || j===0 || j >= sizeY-2)
                         continue;
-                    var sphereShape = new CANNON.Sphere(0.1);
+                    var sphereShape = new CANNON.Sphere(0.3);
                     var sphereBody = new CANNON.Body({ mass: mass });
                     sphereBody.addShape(sphereShape);
-                    sphereBody.position.set(0.25 + i, 0.25 + j, 3);
+                    sphereBody.position.set(0.25 + i, 0.25 + j, 5);
                     sphereBody.position.vadd(hfBody.position, sphereBody.position);
                     world.addBody(sphereBody);
                     demo.addVisual(sphereBody);
